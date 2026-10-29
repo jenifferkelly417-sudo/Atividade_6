@@ -38,4 +38,15 @@ class AppTest {
                 "A senha deve conter pelo menos uma letra maiuscula"
         ));
     }
+    @Test
+    void deveRejeitarSenhaSemCaractereEspecial() {
+        ResultadoValidacao resultado =
+                ValidadorSenha.validar("Abcdef123");
+
+        assertFalse(resultado.isValida());
+
+        assertTrue(resultado.getErros().contains(
+                "A senha deve conter pelo menos um caractere especial"
+        ));
+    }
 }
