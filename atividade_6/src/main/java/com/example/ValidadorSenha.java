@@ -8,42 +8,61 @@ public class ValidadorSenha {
     public static ResultadoValidacao validar(String senha) {
         List<String> erros = new ArrayList<>();
 
+        validarTamanho(senha, erros);
+        validarDigitos(senha, erros);
+        validarMaiuscula(senha, erros);
+        validarCaractereEspecial(senha, erros);
+
+        return new ResultadoValidacao(erros.isEmpty(), erros);
+    }
+
+    private static void validarTamanho(
+            String senha, List<String> erros) {
+
         if (senha.length() < 8) {
             erros.add("A senha deve ter pelo menos 8 caracteres");
         }
+    }
 
-        int quantidadeDigitos = 0;
-        boolean temMaiuscula = false;
-        boolean temCaractereEspecial = false;
+    private static void validarDigitos(
+            String senha, List<String> erros) {
+
+        int quantidade = 0;
+
+        for (int i = 0; i < senha.length(); i++) {
+            if (Character.isDigit(senha.charAt(i))) {
+                quantidade++;
+            }
+        }
+
+        if (quantidade < 2) {
+            erros.add("A senha deve conter pelo menos 2 dígitos");
+        }
+    }
+
+    private static void validarMaiuscula(
+            String senha, List<String> erros) {
+
+        for (int i = 0; i < senha.length(); i++) {
+            if (Character.isUpperCase(senha.charAt(i))) {
+                return;
+            }
+        }
+
+        erros.add("A senha deve conter pelo menos uma letra maiuscula");
+    }
+
+    private static void validarCaractereEspecial(
+            String senha, List<String> erros) {
 
         for (int i = 0; i < senha.length(); i++) {
             char caractere = senha.charAt(i);
 
-            if (Character.isDigit(caractere)) {
-                quantidadeDigitos++;
-            }
-
-            if (Character.isUpperCase(caractere)) {
-                temMaiuscula = true;
-            }
-
             if (!Character.isLetterOrDigit(caractere)) {
-                temCaractereEspecial = true;
+                return;
             }
         }
 
-        if (quantidadeDigitos < 2) {
-            erros.add("A senha deve conter pelo menos 2 dígitos");
-        }
-
-        if (!temMaiuscula) {
-            erros.add("A senha deve conter pelo menos uma letra maiuscula");
-        }
-
-        if (!temCaractereEspecial) {
-            erros.add("A senha deve conter pelo menos um caractere especial");
-        }
-
-        return new ResultadoValidacao(erros.isEmpty(), erros);
+        erros.add("A senha deve conter pelo menos um caractere especial");
     }
 }
