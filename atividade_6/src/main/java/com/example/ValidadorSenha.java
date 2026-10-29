@@ -13,15 +13,26 @@ public class ValidadorSenha {
         }
 
         int quantidadeDigitos = 0;
+        boolean temMaiuscula = false;
 
         for (int i = 0; i < senha.length(); i++) {
-            if (Character.isDigit(senha.charAt(i))) {
+            char caractere = senha.charAt(i);
+
+            if (Character.isDigit(caractere)) {
                 quantidadeDigitos++;
+            }
+
+            if (Character.isUpperCase(caractere)) {
+                temMaiuscula = true;
             }
         }
 
         if (quantidadeDigitos < 2) {
             erros.add("A senha deve conter pelo menos 2 dígitos");
+        }
+
+        if (!temMaiuscula) {
+            erros.add("A senha deve conter pelo menos uma letra maiuscula");
         }
 
         return new ResultadoValidacao(erros.isEmpty(), erros);
