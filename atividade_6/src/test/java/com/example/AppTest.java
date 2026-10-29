@@ -16,4 +16,15 @@ class AppTest {
                 "A senha deve ter pelo menos 8 caracteres"
         ));
     }
+    @Test
+    void deveRejeitarSenhaComMenosDeDoisDigitos() {
+        ResultadoValidacao resultado =
+                ValidadorSenha.validar("Abcdefg!");
+
+        assertFalse(resultado.isValida());
+
+        assertTrue(resultado.getErros().contains(
+                "A senha deve conter pelo menos 2 dígitos"
+        ));
+    }
 }
